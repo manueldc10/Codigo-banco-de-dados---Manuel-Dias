@@ -1,0 +1,278 @@
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+
+    int numeroConta[5];
+    string nomeCliente[5];
+    string cpf[5];
+    int tipoConta[5];
+    double saldo[5];
+    bool contaAtiva[5];
+
+    int quantidade = 0;
+    int opcao;
+
+    do {
+        cout << "\n=============================\n";
+        cout << "       BANCO INF101\n";
+        cout << "=============================\n";
+        cout << "1 - Cadastrar conta\n";
+        cout << "2 - Consultar conta\n";
+        cout << "3 - Verificar saldo\n";
+        cout << "4 - Alterar tipo da conta\n";
+        cout << "5 - Ativar/Desativar conta\n";
+        cout << "6 - Sair\n";
+        cout << "=============================\n";
+        cout << "Digite uma opcao: ";
+        cin >> opcao;
+
+        switch (opcao) {
+
+        case 1: {
+            if (quantidade == 5) {
+                cout << "\nLimite de 5 contas atingido!\n";
+                break;
+            }
+
+            int numero;
+            bool existe;
+
+            do {
+                cout << "\nDigite o numero da conta: ";
+                cin >> numero;
+
+                if (numero <= 0) {
+                    cout << "O numero deve ser maior que zero!\n";
+                }
+
+            } while (numero <= 0);
+
+            existe = false;
+
+            for (int i = 0; i < quantidade; i++) {
+                if (numeroConta[i] == numero) {
+                    existe = true;
+                }
+            }
+
+            if (existe) {
+                cout << "Essa conta ja existe!\n";
+                break;
+            }
+
+            numeroConta[quantidade] = numero;
+
+            cin.ignore();
+
+            cout << "Digite o nome do cliente: ";
+            getline(cin, nomeCliente[quantidade]);
+
+            cout << "Digite o CPF: ";
+            getline(cin, cpf[quantidade]);
+
+            do {
+                cout << "\nTipo da conta:\n";
+                cout << "1 - Corrente\n";
+                cout << "2 - Poupanca\n";
+                cout << "Digite: ";
+                cin >> tipoConta[quantidade];
+
+                if (tipoConta[quantidade] != 1 &&
+                    tipoConta[quantidade] != 2) {
+                    cout << "Tipo invalido!\n";
+                }
+
+            } while (tipoConta[quantidade] != 1 &&
+                     tipoConta[quantidade] != 2);
+
+            do {
+                cout << "Digite o saldo inicial: ";
+                cin >> saldo[quantidade];
+
+                if (saldo[quantidade] < 0) {
+                    cout << "O saldo nao pode ser negativo!\n";
+                }
+
+            } while (saldo[quantidade] < 0);
+
+            contaAtiva[quantidade] = true;
+
+            quantidade++;
+
+            cout << "\nConta cadastrada com sucesso!\n";
+
+            break;
+        }
+
+        case 2: {
+            if (quantidade == 0) {
+                cout << "\nNenhuma conta cadastrada!\n";
+                break;
+            }
+
+            int numero;
+            int posicao = -1;
+
+            cout << "\nDigite o numero da conta: ";
+            cin >> numero;
+
+            for (int i = 0; i < quantidade; i++) {
+                if (numeroConta[i] == numero) {
+                    posicao = i;
+                }
+            }
+
+            if (posicao == -1) {
+                cout << "Conta nao encontrada!\n";
+            } else {
+                cout << "\n===== CONTA =====\n";
+                cout << "Numero: " << numeroConta[posicao] << endl;
+                cout << "Nome: " << nomeCliente[posicao] << endl;
+                cout << "CPF: " << cpf[posicao] << endl;
+
+                if (tipoConta[posicao] == 1) {
+                    cout << "Tipo: Corrente\n";
+                } else {
+                    cout << "Tipo: Poupanca\n";
+                }
+
+                cout << "Saldo: R$ " << saldo[posicao] << endl;
+
+                if (contaAtiva[posicao]) {
+                    cout << "Situacao: Ativa\n";
+                } else {
+                    cout << "Situacao: Inativa\n";
+                }
+            }
+
+            break;
+        }
+
+        case 3: {
+            if (quantidade == 0) {
+                cout << "\nNenhuma conta cadastrada!\n";
+                break;
+            }
+
+            int numero;
+            int posicao = -1;
+
+            cout << "\nDigite o numero da conta: ";
+            cin >> numero;
+
+            for (int i = 0; i < quantidade; i++) {
+                if (numeroConta[i] == numero) {
+                    posicao = i;
+                }
+            }
+
+            if (posicao == -1) {
+                cout << "Conta nao encontrada!\n";
+            } else if (!contaAtiva[posicao]) {
+                cout << "A conta esta desativada!\n";
+            } else {
+                cout << "Saldo: R$ " << saldo[posicao] << endl;
+            }
+
+            break;
+        }
+
+        case 4: {
+            if (quantidade == 0) {
+                cout << "\nNenhuma conta cadastrada!\n";
+                break;
+            }
+
+            int numero;
+            int posicao = -1;
+            int novoTipo;
+
+            cout << "\nDigite o numero da conta: ";
+            cin >> numero;
+
+            for (int i = 0; i < quantidade; i++) {
+                if (numeroConta[i] == numero) {
+                    posicao = i;
+                }
+            }
+
+            if (posicao == -1) {
+                cout << "Conta nao encontrada!\n";
+                break;
+            }
+
+            if (!contaAtiva[posicao]) {
+                cout << "A conta esta desativada!\n";
+                break;
+            }
+
+            do {
+                cout << "\nNovo tipo:\n";
+                cout << "1 - Corrente\n";
+                cout << "2 - Poupanca\n";
+                cout << "Digite: ";
+                cin >> novoTipo;
+
+                if (novoTipo != 1 && novoTipo != 2) {
+                    cout << "Tipo invalido!\n";
+                }
+
+            } while (novoTipo != 1 && novoTipo != 2);
+
+            tipoConta[posicao] = novoTipo;
+
+            cout << "Tipo da conta alterado!\n";
+
+            break;
+        }
+
+        case 5: {
+            if (quantidade == 0) {
+                cout << "\nNenhuma conta cadastrada!\n";
+                break;
+            }
+
+            int numero;
+            int posicao = -1;
+
+            cout << "\nDigite o numero da conta: ";
+            cin >> numero;
+
+            for (int i = 0; i < quantidade; i++) {
+                if (numeroConta[i] == numero) {
+                    posicao = i;
+                }
+            }
+
+            if (posicao == -1) {
+                cout << "Conta nao encontrada!\n";
+            } else {
+
+                if (contaAtiva[posicao]) {
+                    contaAtiva[posicao] = false;
+                    cout << "Conta desativada!\n";
+                } else {
+                    contaAtiva[posicao] = true;
+                    cout << "Conta ativada!\n";
+                }
+            }
+
+            break;
+        }
+
+        case 6:
+            cout << "\nPrograma encerrado!\n";
+            break;
+
+        default:
+            cout << "\nOpcao invalida!\n";
+        }
+
+    } while (opcao != 6);
+
+    return 0;
+}
